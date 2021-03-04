@@ -159,6 +159,9 @@ public class PlayerController : ControllerBase
         float xDir = Mathf.Sign(velocity.x);
         float rayLength = Mathf.Abs(velocity.x) + SHELL_WIDTH;
 
+        float distToStair = 0f;
+        bool climbingStair = false;
+
         for(int i = 0; i < HORIZONTAL_RAY_COUNT; i++)
         {
             Vector2 rayOrigin = xDir == -1 ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
@@ -200,8 +203,17 @@ public class PlayerController : ControllerBase
                     }
 
                     if (stairHeight <= stepHeight)
+                    {
                         velocity.y = stairHeight + SHELL_WIDTH;
+                        climbingStair = true;
+                        distToStair = hit.distance;
+                        continue;
+                    }
                 }
+
+                // Ignore rays against the stair
+                if (climbingStair && distToStair == hit.distance)
+                    continue;
 
                 // We're moving into a oneWayPlatform from it's back
                 if (i == 0 && !ignoreOneWayPlatforms && hit.collider as EdgeCollider2D != null && slopeAngle > maxSlopeAscendAngle)
