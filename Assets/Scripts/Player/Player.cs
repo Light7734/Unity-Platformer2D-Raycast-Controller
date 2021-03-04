@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         // GRAVITY //
         desiredVelocity.y += gravity * Time.deltaTime;
 
-        // JUMP
+        // JUMP //
         if(isJumping)
         {
             desiredVelocity.y = jumpVelocity;
@@ -78,15 +78,16 @@ public class Player : MonoBehaviour
         controller.Move(desiredVelocity * Time.deltaTime, ForceDir.Self);
     }
 
+
+    public void OnMovement(InputValue value)
+    {
+        moveDir = value.Get<float>();
+    }
+
     public void OnJump(InputValue value)
     {
         if (controller.collisionState.below)
             isJumping = true;
-    }
-
-    public void OnMovement(InputValue value)
-    {
-        moveDir = value.Get<float>();    
     }
 
 }

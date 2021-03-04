@@ -95,8 +95,6 @@ public class PlayerController : ControllerBase
 
     private void CheckPrevCollisions()
     {
-        // TODO:
-
         // Below
         if (collisionState.below == false && collisionState.prevBelow == true)
         {
@@ -106,7 +104,7 @@ public class PlayerController : ControllerBase
                 RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, SHELL_WIDTH * 2, platformMask);
 
                 if ((ignoredOneWayPlatform != null) && hit.transform.gameObject == ignoredOneWayPlatform)
-                    return;
+                    continue;
 
                 if (hit)
                     collisionState.below = true;
@@ -181,7 +179,7 @@ public class PlayerController : ControllerBase
 
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
-                // Step
+                // Check if we can step up a stair
                 if (i == 0 && slopeAngle == 90f && collisionState.prevBelow)
                 {
                     Sprite sprite = tileMap.GetSprite(tileMap.WorldToCell(hit.point + SHELL_WIDTH * xDir * Vector2.right));;
@@ -307,7 +305,6 @@ public class PlayerController : ControllerBase
             Vector2 rayOrigin = Mathf.Sign(velocity.x) == -1f ? raycastOrigins.bottomRight : raycastOrigins.bottomLeft;
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, stepHeight + SHELL_WIDTH, platformMask | oneWayPlatformMask);
 
-            // Step down
             if(hit)
             {
                 if( !( (ignoreOneWayPlatforms && Mathf.Pow(2, hit.transform.gameObject.layer) == oneWayPlatformMask.value) ||
