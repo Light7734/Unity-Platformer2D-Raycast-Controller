@@ -48,8 +48,8 @@ public abstract class ControllerBase : MonoBehaviour
         Bounds bounds = collider.bounds;
         bounds.Expand(-SHELL_WIDTH * 2);
 
-        horizontalRaySpacing = collider.bounds.size.y / (HORIZONTAL_RAY_COUNT - 1);
-        verticalRaySpacing= collider.bounds.size.x / (VERTICAL_RAY_COUNT - 1);
+        horizontalRaySpacing = bounds.size.y / (HORIZONTAL_RAY_COUNT - 1);
+        verticalRaySpacing= bounds.size.x / (VERTICAL_RAY_COUNT - 1);
     }
 
     protected struct RaycastOrigins

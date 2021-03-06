@@ -151,7 +151,7 @@ public class PlayerController : ControllerBase
         }
     }
 
-    #region COLLISIONS
+    #region Collisions
     private void HorizontalCollisions(ref Vector2 velocity)
     {
         float xDir = Mathf.Sign(velocity.x);

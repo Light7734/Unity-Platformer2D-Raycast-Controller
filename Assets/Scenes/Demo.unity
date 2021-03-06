@@ -2490,7 +2490,7 @@ MonoBehaviour:
   accelerationAirborne: 0.3
   accelerationGrounded: 0.1
   jumpHeight: 2.9
-  timeToJumpApex: 0.132
+  timeToJumpApex: 0.172
 --- !u!114 &2081747001
 MonoBehaviour:
   m_ObjectHideFlags: 0
