@@ -22,8 +22,8 @@ public class Player : MonoBehaviour
     [SerializeField] [Range(0f, 1f)] private float accelerationGrounded = .1f;
 
     // Jumping
-    [SerializeField] [Range(1f, 10f)] private float jumpHeight= 5f;
-    [SerializeField] [Range(0f, 1f)] private float timeToJumpApex= .1f;
+    [SerializeField] [Range(1f, 10f)] private float jumpHeight = 5f;
+    [SerializeField] [Range(0f, 1f)] private float timeToJumpApex = .1f;
 
     private float gravity;
     private float jumpVelocity;
@@ -53,6 +53,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+    }
+
+    private void FixedUpdate()
+    {
         // COLLISIONS //
         if (controller.collisionState.below && desiredVelocity.y < 0f)
             desiredVelocity.y = 0f;
@@ -60,7 +64,7 @@ public class Player : MonoBehaviour
             desiredVelocity.y = 0f;
 
         // MOVEMENT //
-        if (controller.collisionState.below) 
+        if (controller.collisionState.below)
             desiredVelocity.x = Mathf.SmoothDamp(desiredVelocity.x, moveDir * moveSpeed, ref velXSmoothing, accelerationGrounded);
         else
             desiredVelocity.x = Mathf.SmoothDamp(desiredVelocity.x, moveDir * moveSpeed, ref velXSmoothing, accelerationAirborne);
@@ -69,13 +73,13 @@ public class Player : MonoBehaviour
         desiredVelocity.y += gravity * Time.deltaTime;
 
         // JUMP //
-        if(isJumping)
+        if (isJumping)
         {
             desiredVelocity.y = jumpVelocity;
             isJumping = false;
         }
 
-        controller.Move(desiredVelocity * Time.deltaTime, ForceDir.Self);
+        controller.Move(desiredVelocity * Time.fixedDeltaTime, ForceDir.Self);
     }
 
 
