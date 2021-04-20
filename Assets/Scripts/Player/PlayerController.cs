@@ -93,6 +93,8 @@ public class PlayerController : ControllerBase
         ignoreOneWayPlatforms = false;
     }
 
+    #region Collisions
+
     private void CheckPrevCollisions()
     {
         // Below
@@ -151,7 +153,6 @@ public class PlayerController : ControllerBase
         }
     }
 
-    #region Collisions
     private void HorizontalCollisions(ref Vector2 velocity)
     {
         float xDir = Mathf.Sign(velocity.x);
@@ -188,17 +189,18 @@ public class PlayerController : ControllerBase
                     float stairTop;
                     float stairHeight = Mathf.Infinity;
 
-                    for (int j = 0; j < sprite.GetPhysicsShapeCount(); j++)
-                    {
-                        sprite.GetPhysicsShape(j, physicsShape);
-                        stairTop = tileMap.WorldToCell(hit.point).y + .5f + physicsShape[2].y;
+                    if (sprite != null)
+                        for (int j = 0; j < sprite.GetPhysicsShapeCount(); j++)
+                        {
+                            sprite.GetPhysicsShape(j, physicsShape);
+                            stairTop = tileMap.WorldToCell(hit.point).y + .5f + physicsShape[2].y;
 
-                        if (stairTop - hit.point.y <= 0)
-                            continue;
+                            if (stairTop - hit.point.y <= 0)
+                                continue;
 
-                        if (stairTop - hit.point.y < stairHeight)
-                            stairHeight = stairTop - hit.point.y;
-                    }
+                            if (stairTop - hit.point.y < stairHeight)
+                                stairHeight = stairTop - hit.point.y;
+                        }
 
                     if (stairHeight <= stepHeight)
                     {
