@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class Platform : MonoBehaviour
 /* 
  * TODO:
  *  Go through
- *  Cyclic
  *  Smoothing
- *  Hold/Release
  *  Timed way points
  */
 {
@@ -16,11 +15,13 @@ public class Platform : MonoBehaviour
     [SerializeField] private List<Vector2> localWayPoints = new List<Vector2>();
     [SerializeField] private float speed = 1f;
 
+    private List<Vector2> globalWayPoints = new List<Vector2>();
+    private int fromWayPoint = 0, toWayPoint = 1;
+
     [SerializeField] private bool isCyclic = false;
     private bool isCyclingBack = false;
 
-    private List<Vector2> globalWayPoints = new List<Vector2>();
-    private int fromWayPoint = 0, toWayPoint = 1;
+    private bool isHold = false;
 
     #region UnityEvents
 
@@ -34,6 +35,9 @@ public class Platform : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isHold)
+            return;
+
         Vector2 velocity =  Vector3.MoveTowards(transform.position, globalWayPoints[toWayPoint], speed * Time.fixedDeltaTime) - transform.position;
         controller.Move(velocity, ForceDir.Self);
 
@@ -57,6 +61,11 @@ public class Platform : MonoBehaviour
             else
                 toWayPoint = (toWayPoint + 1) % globalWayPoints.Count;
         }
+    }
+
+    public void SetHold(bool hold, bool toggle)
+    {
+        isHold = toggle ? !isHold : hold;
     }
 
     private void OnDrawGizmos()
