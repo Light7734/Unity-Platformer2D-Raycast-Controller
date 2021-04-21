@@ -14,7 +14,10 @@ public class Platform : MonoBehaviour
     [SerializeField] private PlatformController controller;
 
     [SerializeField] private List<Vector2> localWayPoints = new List<Vector2>();
-    [SerializeField] private float speed;
+    [SerializeField] private float speed = 1f;
+
+    [SerializeField] private bool isCyclic = false;
+    private bool isCyclingBack = false;
 
     private List<Vector2> globalWayPoints = new List<Vector2>();
     private int fromWayPoint = 0, toWayPoint = 1;
@@ -35,7 +38,25 @@ public class Platform : MonoBehaviour
         controller.Move(velocity, ForceDir.Self);
 
         if (transform.position == (Vector3)globalWayPoints[toWayPoint])
-            toWayPoint = (toWayPoint + 1) % globalWayPoints.Count;
+        {
+            if(isCyclic)
+            {
+                if (!isCyclingBack)
+                {
+                    toWayPoint++;
+                    if (toWayPoint == globalWayPoints.Count - 1)
+                        isCyclingBack = true;
+                }
+                else
+                {
+                    toWayPoint--;
+                    if (toWayPoint == 0)
+                        isCyclingBack = false;
+                }
+            }
+            else
+                toWayPoint = (toWayPoint + 1) % globalWayPoints.Count;
+        }
     }
 
     private void OnDrawGizmos()
