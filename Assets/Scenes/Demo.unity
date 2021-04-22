@@ -378,6 +378,7 @@ MonoBehaviour:
   - {x: 4.55, y: 0}
   - {x: 2.275, y: 3.1}
   speed: 2.42
+  isCyclic: 1
 --- !u!212 &699146863
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -436,8 +437,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 699146861}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.18, y: -0.83, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -6.24, y: -0.89, z: 0}
+  m_LocalScale: {x: 1, y: 0.175, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 9

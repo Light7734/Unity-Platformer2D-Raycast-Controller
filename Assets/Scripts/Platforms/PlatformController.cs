@@ -6,7 +6,7 @@ public class PlatformController : ControllerBase
 {
     [SerializeField] private LayerMask mask;
     private List<PassengerMovement> passengers = new List<PassengerMovement>();
-
+   
     #region UnityEvents
 
     protected override void Start()

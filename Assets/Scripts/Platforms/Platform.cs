@@ -6,40 +6,43 @@ public class Platform : MonoBehaviour
 /* 
  * TODO:
  *  Go through
- *  Smoothing
- *  Timed way points
  */
 {
     [SerializeField] private PlatformController controller;
 
     [SerializeField] private List<Vector2> localWayPoints = new List<Vector2>();
-    [SerializeField] private float speed = 1f;
 
     private List<Vector2> globalWayPoints = new List<Vector2>();
-    private int fromWayPoint = 0, toWayPoint = 1;
+    private int toWayPoint = 0;
 
+    private Vector2 tweenPosition;
+
+    [SerializeField] private float speed = 1f;
     [SerializeField] private bool isCyclic = false;
-    private bool isCyclingBack = false;
 
+    private bool isCyclingBack = false;
     private bool isHold = false;
+
+    [SerializeField] private LeanTweenType easeType = LeanTweenType.notUsed;
 
     #region UnityEvents
 
     private void Awake()
     {
-        globalWayPoints.Add((Vector2)transform.position);
+        globalWayPoints.Add(transform.position);
 
         foreach(Vector2 wayPoint in localWayPoints)
             globalWayPoints.Add((Vector2)transform.position + wayPoint);
+
+        tweenPosition = transform.position;
+        Debug.Log(tweenPosition);
+
     }
 
     private void FixedUpdate()
     {
         if (isHold)
             return;
-
-        Vector2 velocity =  Vector3.MoveTowards(transform.position, globalWayPoints[toWayPoint], speed * Time.fixedDeltaTime) - transform.position;
-        controller.Move(velocity, ForceDir.Self);
 
         if (transform.position == (Vector3)globalWayPoints[toWayPoint])
         {
@@ -60,6 +63,13 @@ public class Platform : MonoBehaviour
             }
             else
                 toWayPoint = (toWayPoint + 1) % globalWayPoints.Count;
+
+            LeanTween.value(gameObject, tweenPosition, globalWayPoints[toWayPoint], 1.33F)
+                .setOnUpdate(new System.Action<Vector2>((value) =>
+                {
+                    controller.Move(value - tweenPosition, ForceDir.Self);
+                    tweenPosition = value;
+                })).setEase(easeType);
         }
     }
 
